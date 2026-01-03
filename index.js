@@ -77,7 +77,7 @@ client.on('messageCreate', async (message) => {
         await message.reply('KAOS online!');
     }
 
-    // k!clear ou k!cl ou k!limpar — silencioso
+    // k!clear ou k!cl — silencioso
     if (commandName === 'clear' || commandName === 'cl' || commandName === 'limpar') {
         if (!message.member.permissions.has('ManageMessages')) return message.reply('Você não tem permissão para apagar mensagens.');
         const amount = parseInt(args[0]);
@@ -94,7 +94,7 @@ client.on('messageCreate', async (message) => {
         if (!message.member.permissions.has('BanMembers')) return message.reply('Você não tem permissão para banir.');
         const member = message.mentions.members.first();
         if (!member) return message.reply('Mencione um usuário válido.');
-        if (!member.bannable) return message.reply('Não consigo banir esse usuário (cargo maior?).');
+        if (!member.bannable) return message.reply('Não consigo banir esse usuário.');
         const reason = args.slice(1).join(' ') || 'Sem razão informada';
 
         try {
@@ -377,25 +377,21 @@ client.on('messageCreate', async (message) => {
             message.author.send('Tempo esgotado. Tente novamente.');
         }
     }
-});
 
-
-// === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
+    // === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
     const respostasAutomaticas = {
         'dafuria': 'cafajeste',
         'levi': 'gostoso'
     };
 
-    // Função async pra permitir await
-    (async () => {
-        const mensagemLower = message.content.toLowerCase();
-        for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
-            if (mensagemLower.includes(palavra)) {
-                await message.reply(resposta);
-                break; // responde só a primeira
-            }
+    const mensagemLower = message.content.toLowerCase();
+    for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
+        if (mensagemLower.includes(palavra)) {
+            await message.reply(resposta);
+            break;
         }
-    })(); 
+    }
+});
 
 // Login
 client.login(process.env.TOKEN);
