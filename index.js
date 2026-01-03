@@ -384,7 +384,7 @@ client.on('messageCreate', async (message) => {
     const respostasAutomaticas = {
         'dafuria': 'cafajeste'
         // Se quiser adicionar mais no futuro, basta colocar aqui:
-         'levi': 'gostoso',
+         'levi': 'gostoso'
     };
 
     // Verifica se a mensagem contém a palavra-chave
