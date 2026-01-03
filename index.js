@@ -382,9 +382,9 @@ client.on('messageCreate', async (message) => {
 
 // === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
     const respostasAutomaticas = {
-        'dafuria': 'cafajeste'
-        // Se quiser adicionar mais no futuro, basta colocar aqui:
-         'levi': 'gostoso'
+        'dafuria': 'cafajeste',
+        
+        'levi': 'gostoso'
     };
 
     // Verifica se a mensagem contém a palavra-chave
