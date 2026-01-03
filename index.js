@@ -386,14 +386,16 @@ client.on('messageCreate', async (message) => {
         'levi': 'gostoso'
     };
 
-    // Verifica se a mensagem contém alguma palavra-chave (ignorando maiúscula/minúscula)
-    const mensagemLower = message.content.toLowerCase();
-    for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
-        if (mensagemLower.includes(palavra)) {
-            await message.reply(resposta);
-            break; // responde só a primeira palavra encontrada na mensagem
+    // Função async pra permitir await
+    (async () => {
+        const mensagemLower = message.content.toLowerCase();
+        for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
+            if (mensagemLower.includes(palavra)) {
+                await message.reply(resposta);
+                break; // responde só a primeira
+            }
         }
-    } 
+    })(); 
 
 // Login
 client.login(process.env.TOKEN);
