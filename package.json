@@ -1,8 +1,16 @@
 {
+  "name": "kaos-bot",
+  "version": "1.0.0",
+  "description": "Meu bot do Discord",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
   "dependencies": {
-    "@discordjs/builders": "^1.13.1",
-    "@discordjs/rest": "^2.6.0",
-    "discord-api-types": "^0.38.37",
-    "discord.js": "^14.25.1"
+    "discord.js": "^14.15.3",
+    "express": "^5.2.1"
+  },
+  "engines": {
+    "node": ">=18"
   }
 }

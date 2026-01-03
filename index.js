@@ -1,36 +1,75 @@
-const fs = require('node:fs');
-const path = require('node:path');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
-const { token } = require('./config.json');
+const { Client, GatewayIntentBits, Collection, REST, Routes } = require('discord.js');
+const express = require('express');
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+// Configuração do cliente do bot
+const client = new Client({
+    intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent // só se precisar ler mensagens normais
+    ]
+});
 
 client.commands = new Collection();
-const commandsPath = path.join(__dirname, 'commands');
-const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
 
-for (const file of commandFiles) {
-  const filePath = path.join(commandsPath, file);
-  const command = require(filePath);
-  client.commands.set(command.data.name, command);
+// === Comandos Slash ===
+const commands = [
+    {
+        name: 'ping',
+        description: 'Verifica se o KAOS está online',
+    },
+    // Adicione mais comandos aqui depois
+];
+
+// Registro dos comandos
+async function registerCommands() {
+    const rest = new REST({ version: '10' }).setToken(process.env.TOKEN);
+
+    try {
+        console.log('Registrando slash commands...');
+
+        await rest.put(
+            Routes.applicationCommands(client.user?.id || 'SEU_BOT_ID'),
+            { body: commands }
+        );
+
+        console.log('Slash commands registrados com sucesso!');
+    } catch (error) {
+        console.error('Erro ao registrar comandos:', error);
+    }
 }
 
-client.once('ready', () => {
-  console.log(`🔥 Online como ${client.user.tag}`);
+// Quando o bot ficar online
+client.once('ready', async () => {
+    console.log(`Online como ${client.user.tag}`); // "Online como KAOS#3399"
+
+    await registerCommands();
 });
 
-client.on('interactionCreate', async interaction => {
-  if (!interaction.isChatInputCommand()) return;
+// Resposta aos comandos
+client.on('interactionCreate', async (interaction) => {
+    if (!interaction.isChatInputCommand()) return;
 
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-
-  try {
-    await command.execute(interaction);
-  } catch (error) {
-    console.error(error);
-    await interaction.reply({ content: 'Erro ao executar comando.', ephemeral: true });
-  }
+    if (interaction.commandName === 'ping') {
+        // Aqui está a resposta personalizada que você pediu
+        await interaction.reply({
+            content: `🔥 **KAOS online!**`,
+            ephemeral: false // false = todo mundo no servidor vê; true = só quem usou vê
+        });
+    }
 });
 
-client.login(token);
+// Login seguro
+client.login(process.env.TOKEN);
+
+// === Servidor Express para Render ===
+const app = express();
+
+app.get('/', (req, res) => {
+    res.send('Bot online! 🚀 KAOS está vivo!');
+});
+
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+    console.log(`Servidor web rodando na porta ${port}`);
+});
