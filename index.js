@@ -379,6 +379,23 @@ client.on('messageCreate', async (message) => {
     }
 });
 
+
+// === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
+    const respostasAutomaticas = {
+        'dafuria': 'cafajeste'
+        // Se quiser adicionar mais no futuro, basta colocar aqui:
+         'levi': 'gostoso',
+    };
+
+    // Verifica se a mensagem contém a palavra-chave
+    const mensagemLower = message.content.toLowerCase();
+    for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
+        if (mensagemLower.includes(palavra.toLowerCase())) {
+            await message.reply(resposta);
+            break; // responde só uma vez por mensagem
+        }
+    }
+
 // Login
 client.login(process.env.TOKEN);
 
