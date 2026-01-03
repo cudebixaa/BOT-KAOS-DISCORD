@@ -383,18 +383,17 @@ client.on('messageCreate', async (message) => {
 // === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
     const respostasAutomaticas = {
         'dafuria': 'cafajeste',
-        
         'levi': 'gostoso'
     };
 
-    // Verifica se a mensagem contém a palavra-chave
+    // Verifica se a mensagem contém alguma palavra-chave (ignorando maiúscula/minúscula)
     const mensagemLower = message.content.toLowerCase();
     for (const [palavra, resposta] of Object.entries(respostasAutomaticas)) {
-        if (mensagemLower.includes(palavra.toLowerCase())) {
+        if (mensagemLower.includes(palavra)) {
             await message.reply(resposta);
-            break; // responde só uma vez por mensagem
+            break; // responde só a primeira palavra encontrada na mensagem
         }
-    }
+    } 
 
 // Login
 client.login(process.env.TOKEN);
