@@ -377,7 +377,9 @@ client.on('messageCreate', async (message) => {
             message.author.send('Tempo esgotado. Tente novamente.');
         }
     }
+});
 
+-
     // === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
     const respostasAutomaticas = {
         'dafuria': 'cafajeste',
