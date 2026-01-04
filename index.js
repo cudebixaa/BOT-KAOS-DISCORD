@@ -66,11 +66,10 @@ const punishmentEmbed = (userTag, avatarURL, reason, type, color, duration = nul
 // === TODOS OS COMANDOS COM PREFIXO k! ===
 client.on('messageCreate', async (message) => {
     if (message.author.bot) return;
-    if (!message.content.startsWith(PREFIX)) return;
-    if (!message.guild) return;
+    if (!message.content.startsWith(PREFIX) && !message.guild) return; // evita erro em DMs para respostas automáticas
 
     const args = message.content.slice(PREFIX.length).trim().split(/ +/);
-    const commandName = args.shift().toLowerCase();
+    const commandName = args.shift()?.toLowerCase() || '';
 
     // k!ping
     if (commandName === 'ping') {
@@ -363,6 +362,7 @@ client.on('messageCreate', async (message) => {
                 footer: { text: 'Tellonym do KAOS' }
             };
 
+
             if (isAnon) {
                 embed.author = { name: 'Pergunta Anônima', icon_url: 'https://i.imgur.com/2Z5Y5ZG.png' };
             } else {
@@ -377,10 +377,8 @@ client.on('messageCreate', async (message) => {
             message.author.send('Tempo esgotado. Tente novamente.');
         }
     }
-});
 
--
-    // === RESPOSTAS AUTOMÁTICAS A PALAVRAS ESPECÍFICAS ===
+    // === RESPOSTAS AUTOMÁTICAS (dentro do messageCreate) ===
     const respostasAutomaticas = {
         'dafuria': 'cafajeste',
         'levi': 'gostoso'
